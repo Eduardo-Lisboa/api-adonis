@@ -1,13 +1,29 @@
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import User from 'App/Models/User'
 
 export default class UsersController {
-  public async index({}: HttpContextContract) {}
+    public async index({}: HttpContextContract) {
+        const users = await User.all()
 
-  public async store({}: HttpContextContract) {}
+        return { users }
+    }
 
-  public async show({}: HttpContextContract) {}
+    public async store({ request }: HttpContextContract) {
+        const body = request.only(['name', 'email', 'password'])
+        const user = await User.create({
+            name: body.name,
+            email: body.email,
+            password: body.password,
+        })
 
-  public async update({}: HttpContextContract) {}
+        return user
+    }
 
-  public async destroy({}: HttpContextContract) {}
+    public async show({}: HttpContextContract) {
+        return 'Hello World!'
+    }
+
+    public async update({}: HttpContextContract) {}
+
+    public async destroy({}: HttpContextContract) {}
 }
