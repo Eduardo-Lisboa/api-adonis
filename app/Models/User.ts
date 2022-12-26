@@ -3,6 +3,9 @@ import { BaseModel, column, beforeSave } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class User extends BaseModel {
+    static oderBy(arg0: string, arg1: string) {
+      throw new Error('Method not implemented.')
+    }
     @column({ isPrimary: true })
     public id: number
 

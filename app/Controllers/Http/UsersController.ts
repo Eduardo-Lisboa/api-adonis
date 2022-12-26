@@ -5,7 +5,7 @@ export default class UsersController {
     public async index({}: HttpContextContract) {
         const users = await User.all()
 
-        return { users }
+        return users
     }
 
     public async store({ request }: HttpContextContract) {
@@ -19,11 +19,24 @@ export default class UsersController {
         return user
     }
 
-    public async show({}: HttpContextContract) {
-        return 'Hello World!'
+    public async show({ request }: HttpContextContract) {
+        const userId = request.param('id')
+        const user = await User.findOrFail(userId)
+        return user
     }
 
-    public async update({}: HttpContextContract) {}
+    public async update({ request }: HttpContextContract) {
+        const userId = request.param('id')
+        const body = request.only(['name', 'email', 'password'])
+        const user = await User.findOrFail(userId)
+        await user.merge(body).save()
+        return user
+    }
 
-    public async destroy({}: HttpContextContract) {}
+    public async destroy({ request }: HttpContextContract) {
+        const userId = request.param('id')
+        const user = await User.findOrFail(userId)
+        await user.delete()
+        return { message: 'User deleted' }
+    }
 }
